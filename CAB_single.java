@@ -11,7 +11,9 @@ public class CAB_single {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		//Get mobile number and Password
 		Long mobile_number,password;
+		//Declaring Date and Time
 		String date,time;
 		System.out.println("Enetr Mobile Number: ");
 		mobile_number =sc.nextLong();//Get Mobile Number
@@ -19,7 +21,7 @@ public class CAB_single {
 		System.out.println("Enter password");
 		//String mobile_object = String.valueOf(mobile_number);//Convert Long into string 
 		password = sc.nextLong();//Get password
-		
+		//Call Login_validation for validation
 		boolean validate = Login_validation(mobile_number,password);
 		if(validate == true) {
 			System.out.println("Accepted");
@@ -28,14 +30,19 @@ public class CAB_single {
 			System.out.println("Enter valid information");
 			System.exit(0);
        }
+		//Call Details methode to get car detail and choose cab type
 		String type = Details();
+		//Call billamount method to caluculate total for a particular cab
 		int ans =  billamount(type);
 		int gst_percentage = 7;
+		//Call gst_Toatal to find amount including GST
 		double gst = gst_Total(ans,gst_percentage);
 		System.out.println("Enter Date of Birth");
+		//Get Date and Time
 		String dob = sc.next();
 		System.out.println("Enter Journey date in the format of yyy-mm-dd");
 		date = sc.next();
+		//Call isDateExpired method to find is date is expired or not
 		if(isDateExpired(date)) {
 			
 		}
@@ -48,9 +55,12 @@ public class CAB_single {
 		
 		System.out.println("Enter pick up time in the format of HH-MM-SS");
 		time = sc.next();
+		//Call Time_Booking method to find is the date and time confrimed or not
 		Time_Booking(date,time);
+		//Call peek_Hours methode to add peek hour charge 
 		double peek = Peek_Hours(date,time,gst);
 		System.out.println("Total Amount depending on peek hour charge "+peek);
+		//Call DOB method to calculate age
 		int present_age = DOB(dob);
 		System.out.println("Your age is "+present_age);
 		if(present_age >= 60) {
@@ -63,6 +73,7 @@ public class CAB_single {
 		}
 		System.out.println("Enter card Number");
 		long card_num = sc.nextLong();
+		//Check is card number is valid
 		if(isCardNumValid(card_num)) {
 			System.out.println("Card Number is valid");
 		}
@@ -71,6 +82,7 @@ public class CAB_single {
 		}
 		System.out.println("Enter card expiredate");
 		String cdate = sc.next();
+		//Check is Date is expired or not
 		if(isDateExpired(cdate)) {
 			System.out.println("Enter a amount");
 			int amo = sc.nextInt();
@@ -86,22 +98,30 @@ public class CAB_single {
 		
 
 	}
+	/*
+	 *Validating mobile number and password
+	 *mobile number must be 10 digit number
+	 *password must be the 8 digit number
+	*/
 	public static boolean Login_validation(long mobile,long password) {
 		boolean validation = true;
-		String mobile_object = String.valueOf(mobile);
+		String mobile_object = String.valueOf(mobile);//Convert long into a String
 		String password_object = String.valueOf(password);//Convert Long into a string
 		if(password_object.length()==8 && password_object!=null && mobile_object!=null && mobile_object.length()==10) 
-			//validate mobile number
 		{
 		    validation = true;
 			
 		}
 		else {
 			validation = false;
-					}
+		}
 		return validation;
 		
 	}
+	/*
+	 *View the CAB types and the amount charged per kilometer
+	 *Get the CAB type from user like MICRO,MINI,PRIME
+	*/
 	public static String Details() {
 		Scanner sc = new Scanner(System.in);
 		int KiloMeter1,ans1;
@@ -136,6 +156,9 @@ public class CAB_single {
 		return type;
 		
 	}
+	/*
+	 *Calculate the amount for particular CAB using kilometer
+	*/
 	public static int billamount(String type) {
 		Scanner sc = new Scanner(System.in);
 		int KiloMeter1,ans1=0     ;
@@ -180,6 +203,10 @@ public class CAB_single {
 		}
 		return ans1;
 	}
+	/*
+	 *Add GST for the CAB charge 
+	 *7% GST for CAB
+	*/
 	public static double gst_Total(int ans1,int percentage) {
 		double GST = (ans1+(ans1*(percentage/100)));
 		return GST;   
@@ -200,6 +227,11 @@ public class CAB_single {
 		}
 		
 	}
+	/*
+	 *To find whether the booking time is peek hour or not
+	 *Find extra charge for the peek time booking
+	 *For peek hours 1.25% charge will be added
+	*/
 	public static double Peek_Hours(String date,String time,double GST){
     	double finalans;
     	LocalDate jdate = LocalDate.parse(date);
@@ -218,6 +250,9 @@ public class CAB_single {
 		}
 		return finalans;
 	}
+	/*
+	 *Find age using Date of birth
+	*/
 	public static int DOB(String dob) {
 		LocalDate ldate = LocalDate.now(); //get present date
 		LocalDate mydob = LocalDate.parse(dob); //parse given date of birth
@@ -226,6 +261,9 @@ public class CAB_single {
 		return age;
 		
 	}
+	/*
+	 *Add discount to the total amount for seniour citizen
+	*/
 	public static double discount(double finalans,double percentage)
 	{
 		
@@ -237,6 +275,9 @@ public class CAB_single {
 		
 		return senior;
 	}
+	/*
+	 *Verify the date which is expired or not
+	*/
 	public static boolean isDateExpired(String date) {
 		LocalDate edate = LocalDate.parse(date);
 		LocalDate today = LocalDate.now();
@@ -250,6 +291,10 @@ public class CAB_single {
 		return e_date;
 		
 	}
+	/*
+	 *Validating the card number
+	 *card number must have the 12 digit number
+	*/
 	public static boolean isCardNumValid(long card_number) {
 		String cNum = String.valueOf(card_number);
 		boolean valid = true;
